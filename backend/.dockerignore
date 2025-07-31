@@ -1,0 +1,13 @@
+# Maven/IDE:
+target/
+.idea/
+*.iml
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node, om jag senare ska lägga ihop
+node_modules/
+dist/
