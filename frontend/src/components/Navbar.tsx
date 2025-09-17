@@ -26,8 +26,8 @@ export const Navbar = () => (
           Dividend Guide
         </Link>
 
-        <Link to="/ddmcalc" className="hover:underline">
-          DDM Calculator
+        <Link to="/calculators" className="hover:underline">
+          Calculators
         </Link>
 
         <Link to="/ddm-history" className="hover:underline">

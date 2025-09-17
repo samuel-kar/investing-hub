@@ -14,10 +14,12 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as SignUpImport } from './routes/sign-up'
 import { Route as SignInImport } from './routes/sign-in'
 import { Route as DividendinvestingImport } from './routes/dividendinvesting'
-import { Route as DdmcalcImport } from './routes/ddmcalc'
 import { Route as DdmHistoryImport } from './routes/ddm-history'
+import { Route as CalculatorsImport } from './routes/calculators'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
+import { Route as CalculatorsDdmImport } from './routes/calculators/ddm'
+import { Route as CalculatorsCompoundInterestImport } from './routes/calculators/compound-interest'
 
 // Create/Update Routes
 
@@ -39,15 +41,15 @@ const DividendinvestingRoute = DividendinvestingImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const DdmcalcRoute = DdmcalcImport.update({
-  id: '/ddmcalc',
-  path: '/ddmcalc',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const DdmHistoryRoute = DdmHistoryImport.update({
   id: '/ddm-history',
   path: '/ddm-history',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CalculatorsRoute = CalculatorsImport.update({
+  id: '/calculators',
+  path: '/calculators',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -62,6 +64,19 @@ const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const CalculatorsDdmRoute = CalculatorsDdmImport.update({
+  id: '/ddm',
+  path: '/ddm',
+  getParentRoute: () => CalculatorsRoute,
+} as any)
+
+const CalculatorsCompoundInterestRoute =
+  CalculatorsCompoundInterestImport.update({
+    id: '/compound-interest',
+    path: '/compound-interest',
+    getParentRoute: () => CalculatorsRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -81,18 +96,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
+    '/calculators': {
+      id: '/calculators'
+      path: '/calculators'
+      fullPath: '/calculators'
+      preLoaderRoute: typeof CalculatorsImport
+      parentRoute: typeof rootRoute
+    }
     '/ddm-history': {
       id: '/ddm-history'
       path: '/ddm-history'
       fullPath: '/ddm-history'
       preLoaderRoute: typeof DdmHistoryImport
-      parentRoute: typeof rootRoute
-    }
-    '/ddmcalc': {
-      id: '/ddmcalc'
-      path: '/ddmcalc'
-      fullPath: '/ddmcalc'
-      preLoaderRoute: typeof DdmcalcImport
       parentRoute: typeof rootRoute
     }
     '/dividendinvesting': {
@@ -116,40 +131,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignUpImport
       parentRoute: typeof rootRoute
     }
+    '/calculators/compound-interest': {
+      id: '/calculators/compound-interest'
+      path: '/compound-interest'
+      fullPath: '/calculators/compound-interest'
+      preLoaderRoute: typeof CalculatorsCompoundInterestImport
+      parentRoute: typeof CalculatorsImport
+    }
+    '/calculators/ddm': {
+      id: '/calculators/ddm'
+      path: '/ddm'
+      fullPath: '/calculators/ddm'
+      preLoaderRoute: typeof CalculatorsDdmImport
+      parentRoute: typeof CalculatorsImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface CalculatorsRouteChildren {
+  CalculatorsCompoundInterestRoute: typeof CalculatorsCompoundInterestRoute
+  CalculatorsDdmRoute: typeof CalculatorsDdmRoute
+}
+
+const CalculatorsRouteChildren: CalculatorsRouteChildren = {
+  CalculatorsCompoundInterestRoute: CalculatorsCompoundInterestRoute,
+  CalculatorsDdmRoute: CalculatorsDdmRoute,
+}
+
+const CalculatorsRouteWithChildren = CalculatorsRoute._addFileChildren(
+  CalculatorsRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/calculators': typeof CalculatorsRouteWithChildren
   '/ddm-history': typeof DdmHistoryRoute
-  '/ddmcalc': typeof DdmcalcRoute
   '/dividendinvesting': typeof DividendinvestingRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/calculators/compound-interest': typeof CalculatorsCompoundInterestRoute
+  '/calculators/ddm': typeof CalculatorsDdmRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/calculators': typeof CalculatorsRouteWithChildren
   '/ddm-history': typeof DdmHistoryRoute
-  '/ddmcalc': typeof DdmcalcRoute
   '/dividendinvesting': typeof DividendinvestingRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/calculators/compound-interest': typeof CalculatorsCompoundInterestRoute
+  '/calculators/ddm': typeof CalculatorsDdmRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/calculators': typeof CalculatorsRouteWithChildren
   '/ddm-history': typeof DdmHistoryRoute
-  '/ddmcalc': typeof DdmcalcRoute
   '/dividendinvesting': typeof DividendinvestingRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/calculators/compound-interest': typeof CalculatorsCompoundInterestRoute
+  '/calculators/ddm': typeof CalculatorsDdmRoute
 }
 
 export interface FileRouteTypes {
@@ -157,37 +206,43 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/calculators'
     | '/ddm-history'
-    | '/ddmcalc'
     | '/dividendinvesting'
     | '/sign-in'
     | '/sign-up'
+    | '/calculators/compound-interest'
+    | '/calculators/ddm'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/calculators'
     | '/ddm-history'
-    | '/ddmcalc'
     | '/dividendinvesting'
     | '/sign-in'
     | '/sign-up'
+    | '/calculators/compound-interest'
+    | '/calculators/ddm'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/calculators'
     | '/ddm-history'
-    | '/ddmcalc'
     | '/dividendinvesting'
     | '/sign-in'
     | '/sign-up'
+    | '/calculators/compound-interest'
+    | '/calculators/ddm'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  CalculatorsRoute: typeof CalculatorsRouteWithChildren
   DdmHistoryRoute: typeof DdmHistoryRoute
-  DdmcalcRoute: typeof DdmcalcRoute
   DividendinvestingRoute: typeof DividendinvestingRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
@@ -196,8 +251,8 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  CalculatorsRoute: CalculatorsRouteWithChildren,
   DdmHistoryRoute: DdmHistoryRoute,
-  DdmcalcRoute: DdmcalcRoute,
   DividendinvestingRoute: DividendinvestingRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
@@ -215,8 +270,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
+        "/calculators",
         "/ddm-history",
-        "/ddmcalc",
         "/dividendinvesting",
         "/sign-in",
         "/sign-up"
@@ -228,11 +283,15 @@ export const routeTree = rootRoute
     "/about": {
       "filePath": "about.tsx"
     },
+    "/calculators": {
+      "filePath": "calculators.tsx",
+      "children": [
+        "/calculators/compound-interest",
+        "/calculators/ddm"
+      ]
+    },
     "/ddm-history": {
       "filePath": "ddm-history.tsx"
-    },
-    "/ddmcalc": {
-      "filePath": "ddmcalc.tsx"
     },
     "/dividendinvesting": {
       "filePath": "dividendinvesting.tsx"
@@ -242,6 +301,14 @@ export const routeTree = rootRoute
     },
     "/sign-up": {
       "filePath": "sign-up.tsx"
+    },
+    "/calculators/compound-interest": {
+      "filePath": "calculators/compound-interest.tsx",
+      "parent": "/calculators"
+    },
+    "/calculators/ddm": {
+      "filePath": "calculators/ddm.tsx",
+      "parent": "/calculators"
     }
   }
 }
