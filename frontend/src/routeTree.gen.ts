@@ -20,6 +20,7 @@ import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as CalculatorsDdmImport } from './routes/calculators/ddm'
 import { Route as CalculatorsCompoundInterestImport } from './routes/calculators/compound-interest'
+import { Route as CalculatorsChowderRuleImport } from './routes/calculators/chowder-rule'
 
 // Create/Update Routes
 
@@ -78,6 +79,12 @@ const CalculatorsCompoundInterestRoute =
     getParentRoute: () => CalculatorsRoute,
   } as any)
 
+const CalculatorsChowderRuleRoute = CalculatorsChowderRuleImport.update({
+  id: '/chowder-rule',
+  path: '/chowder-rule',
+  getParentRoute: () => CalculatorsRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -131,6 +138,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignUpImport
       parentRoute: typeof rootRoute
     }
+    '/calculators/chowder-rule': {
+      id: '/calculators/chowder-rule'
+      path: '/chowder-rule'
+      fullPath: '/calculators/chowder-rule'
+      preLoaderRoute: typeof CalculatorsChowderRuleImport
+      parentRoute: typeof CalculatorsImport
+    }
     '/calculators/compound-interest': {
       id: '/calculators/compound-interest'
       path: '/compound-interest'
@@ -151,11 +165,13 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface CalculatorsRouteChildren {
+  CalculatorsChowderRuleRoute: typeof CalculatorsChowderRuleRoute
   CalculatorsCompoundInterestRoute: typeof CalculatorsCompoundInterestRoute
   CalculatorsDdmRoute: typeof CalculatorsDdmRoute
 }
 
 const CalculatorsRouteChildren: CalculatorsRouteChildren = {
+  CalculatorsChowderRuleRoute: CalculatorsChowderRuleRoute,
   CalculatorsCompoundInterestRoute: CalculatorsCompoundInterestRoute,
   CalculatorsDdmRoute: CalculatorsDdmRoute,
 }
@@ -172,6 +188,7 @@ export interface FileRoutesByFullPath {
   '/dividendinvesting': typeof DividendinvestingRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/calculators/chowder-rule': typeof CalculatorsChowderRuleRoute
   '/calculators/compound-interest': typeof CalculatorsCompoundInterestRoute
   '/calculators/ddm': typeof CalculatorsDdmRoute
 }
@@ -184,6 +201,7 @@ export interface FileRoutesByTo {
   '/dividendinvesting': typeof DividendinvestingRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/calculators/chowder-rule': typeof CalculatorsChowderRuleRoute
   '/calculators/compound-interest': typeof CalculatorsCompoundInterestRoute
   '/calculators/ddm': typeof CalculatorsDdmRoute
 }
@@ -197,6 +215,7 @@ export interface FileRoutesById {
   '/dividendinvesting': typeof DividendinvestingRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/calculators/chowder-rule': typeof CalculatorsChowderRuleRoute
   '/calculators/compound-interest': typeof CalculatorsCompoundInterestRoute
   '/calculators/ddm': typeof CalculatorsDdmRoute
 }
@@ -211,6 +230,7 @@ export interface FileRouteTypes {
     | '/dividendinvesting'
     | '/sign-in'
     | '/sign-up'
+    | '/calculators/chowder-rule'
     | '/calculators/compound-interest'
     | '/calculators/ddm'
   fileRoutesByTo: FileRoutesByTo
@@ -222,6 +242,7 @@ export interface FileRouteTypes {
     | '/dividendinvesting'
     | '/sign-in'
     | '/sign-up'
+    | '/calculators/chowder-rule'
     | '/calculators/compound-interest'
     | '/calculators/ddm'
   id:
@@ -233,6 +254,7 @@ export interface FileRouteTypes {
     | '/dividendinvesting'
     | '/sign-in'
     | '/sign-up'
+    | '/calculators/chowder-rule'
     | '/calculators/compound-interest'
     | '/calculators/ddm'
   fileRoutesById: FileRoutesById
@@ -286,6 +308,7 @@ export const routeTree = rootRoute
     "/calculators": {
       "filePath": "calculators.tsx",
       "children": [
+        "/calculators/chowder-rule",
         "/calculators/compound-interest",
         "/calculators/ddm"
       ]
@@ -301,6 +324,10 @@ export const routeTree = rootRoute
     },
     "/sign-up": {
       "filePath": "sign-up.tsx"
+    },
+    "/calculators/chowder-rule": {
+      "filePath": "calculators/chowder-rule.tsx",
+      "parent": "/calculators"
     },
     "/calculators/compound-interest": {
       "filePath": "calculators/compound-interest.tsx",
