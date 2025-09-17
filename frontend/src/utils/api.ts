@@ -39,9 +39,6 @@ export const fetchQuote = async (symbol: string) => {
   return data.c ?? null; //obs denna är moddad och returnerar bara current price, inte high/low/previous close som förra projektet
 };
 
-/* den här är för CI calculator, kanske används senare
-
-
 export const monthlyCompoundInterestCalculator = (
   startValue: number,
   annualRate: number,
@@ -56,10 +53,6 @@ export const monthlyCompoundInterestCalculator = (
     (monthlyInput * (Math.pow(1 + monthlyRate, months) - 1)) / monthlyRate
   );
 };
-/*
-
-
-
 
 /* Kanske använder senare
 
